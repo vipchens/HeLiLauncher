@@ -14,18 +14,30 @@ directories:
   output: release-new
   buildResources: build
 
-# 需要打包的文件
-# - dist/: Vue 前端构建输出（不含 sourcemap，见 vite.config.ts）
-# - electron/: Electron 主进程代码 + preload + IPC（.cjs）
-# - package.json：版本号与依赖声明（electron-builder 会自动精简）
+# 需要打包的文件（在 electron-builder 默认规则基础上叠加排除，不要正向覆盖！）
+# electron-builder 默认已经包含：
+#   · dist/  (vite 构建输出)
+#   · electron/  (主进程代码)
+#   · package.json  (版本/入口/依赖)
+#   · dependencies 中的 node_modules  (自动解析，主进程 require 需要，不能丢！)
+# 我们只需"额外排除"不需要的内容，不重写正向列表
 files:
-  - dist/**/*
-  - electron/**/*
-  - package.json
-  # 排除不必要的隐藏文件/日志/临时文件，进一步压缩 app.asar 体积
+  # --- 排除源码/脚本/开发构建目录 ---
+  - "!src/**/*"                  # Vue 源码（只需要 dist/）
+  - "!scripts/**/*"              # 构建辅助脚本（客户端运行时不用）
+  - "!public/**/*"               # Vite 已拷贝到 dist/，源目录不重复打包
+  - "!release-new/**/*"          # 构建产物不自引用
+  - "!.electron-builder-cache/**/*"
+  - "!electron-cache/**/*"
+  - "!electron-extract-temp/**/*"
+  # --- 排除 node_modules 里典型的垃圾文件（体积能再减 1~3MB）---
+  - "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,History.md,CHANGELOG,CHANGES,LICENSE,LICENCE,license,NOTICE}"
+  - "!**/node_modules/*/{test,tests,spec,specs,example,examples,doc,docs,benchmark,benchmarks,coverage,__tests__,.github}/**"
+  - "!**/node_modules/*/*.d.ts"
+  - "!**/node_modules/*/*.flow"
+  # --- 排除隐藏文件/系统垃圾/日志 ---
   - "!**/*.md"
-  - "!**/node_modules/**"     # 显式排除防止误打包（files 默认不走 node_modules，但加了保险）
-  - "!**/*.{log,tmp,DS_Store,Thumbs.db}"
+  - "!**/*.{log,tmp,DS_Store,Thumbs.db,swp,swo}"
   - "!**/._*"
 
 # 显式开启 asar 打包（默认 true，保险起见写死）
