@@ -260,8 +260,9 @@ export interface LauncherSettings {
     maxRetry: number
     backupEnabled: boolean
   }
-  update: {
-    github: {
+  /** asar 增量热更新的 GitHub 仓库配置（首次启动由 DEFAULT_CONFIG 兜底注入，即使本地老 config.json 缺失也不影响） */
+  update?: {
+    github?: {
       owner: string
       repo: string
       rawBranch: string

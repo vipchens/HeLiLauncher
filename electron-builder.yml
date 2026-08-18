@@ -48,7 +48,6 @@ nsis:
   # 【B 方案 asar 热更新要求】每用户安装（默认到 %LOCALAPPDATA%\Programs\河狸乐园登录器），
   # 这样替换 resources/app.asar 不需要管理员权限
   perMachine: false
-  defaultInstallMode: perUser
   # 允许用户选择安装目录（注意：用户如果手动选了 C:\Program Files，asar 更新会因为 UAC 失败，需要提示用户重装时保持默认路径）
   allowToChangeInstallationDirectory: true
   # 在桌面创建快捷方式

@@ -16,6 +16,13 @@ import type { LauncherSettings } from '@/types'
 // 服务器端口（固定）
 const SERVER_PORT = 3000
 
+// 独立的 asar 增量更新默认 GitHub 配置（非可选，用于类型收窄，避免 strict 模式下 DEFAULT_SETTINGS.update?.github 报错）
+const DEFAULT_UPDATE_GITHUB = {
+  owner: 'vipchens',
+  repo: 'HeLiLauncher',
+  rawBranch: 'main',
+}
+
 // 默认配置
 const DEFAULT_SETTINGS: LauncherSettings = {
   serverIp: '117.72.202.12',
@@ -28,6 +35,9 @@ const DEFAULT_SETTINGS: LauncherSettings = {
     downloadConcurrency: 4,
     maxRetry: 5,
     backupEnabled: true,
+  },
+  update: {
+    github: DEFAULT_UPDATE_GITHUB,
   },
   lastCheckTime: null,
 }
@@ -70,7 +80,13 @@ export const useConfigStore = defineStore('config', () => {
         settings.value = {
           ...DEFAULT_SETTINGS,
           ...config,
-          settings: { ...DEFAULT_SETTINGS.settings, ...config.settings },
+          settings: { ...DEFAULT_SETTINGS.settings, ...(config.settings || {}) },
+          update: {
+            github: {
+              ...DEFAULT_UPDATE_GITHUB,
+              ...((config.update && config.update.github) || {}),
+            },
+          },
         }
       } else {
         // 浏览器降级：localStorage
@@ -80,7 +96,13 @@ export const useConfigStore = defineStore('config', () => {
           settings.value = {
             ...DEFAULT_SETTINGS,
             ...parsed,
-            settings: { ...DEFAULT_SETTINGS.settings, ...parsed.settings },
+            settings: { ...DEFAULT_SETTINGS.settings, ...(parsed.settings || {}) },
+            update: {
+              github: {
+                ...DEFAULT_UPDATE_GITHUB,
+                ...((parsed.update && parsed.update.github) || {}),
+              },
+            },
           }
         }
       }
