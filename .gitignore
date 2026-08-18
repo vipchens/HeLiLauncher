@@ -1,0 +1,29 @@
+# 依赖
+node_modules/
+
+# 构建输出
+dist/
+release/
+release-new/
+
+# 缓存
+.electron-builder-cache/
+electron-cache/
+electron-extract-temp/
+
+# IDE
+.vscode/
+.idea/
+
+# 系统文件
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# 日志
+*.log
+npm-debug.log*
+
+# 环境变量
+.env
+.env.local

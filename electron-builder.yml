@@ -1,0 +1,77 @@
+# electron-builder 打包配置
+# 文档: https://www.electron.build/
+
+appId: com.hualin.wowlauncher
+productName: 河狸乐园登录器
+copyright: Copyright © 2026 河狸乐园
+
+# Electron 下载镜像（国内加速）
+electronDownload:
+  mirror: https://npmmirror.com/mirrors/electron/
+
+# 构建目录
+directories:
+  output: release-new
+  buildResources: build
+
+# 需要打包的文件
+# - dist/: Vue 前端构建输出
+# - electron/: Electron 主进程代码
+files:
+  - dist/**/*
+  - electron/**/*
+  - package.json
+
+# 额外资源（图标等）
+extraResources:
+  - from: build/icon.ico
+    to: icon.ico
+    filter: ['**/*']
+
+# Windows 打包配置
+win:
+  # 目标架构：同时支持 x64 和 ia32（32位）
+  target:
+    - target: nsis
+      arch:
+        - x64
+        - ia32
+  # 图标文件（需要 256x256 .ico 格式）
+  icon: build/icon.ico
+  # 跳过代码签名（无证书时必须设置）
+  signAndEditExecutable: false
+
+# NSIS 安装程序配置
+nsis:
+  # 一键安装 vs 辅助安装
+  oneClick: false
+  # 【B 方案 asar 热更新要求】每用户安装（默认到 %LOCALAPPDATA%\Programs\河狸乐园登录器），
+  # 这样替换 resources/app.asar 不需要管理员权限
+  perMachine: false
+  defaultInstallMode: perUser
+  # 允许用户选择安装目录（注意：用户如果手动选了 C:\Program Files，asar 更新会因为 UAC 失败，需要提示用户重装时保持默认路径）
+  allowToChangeInstallationDirectory: true
+  # 在桌面创建快捷方式
+  createDesktopShortcut: true
+  # 在开始菜单创建快捷方式
+  createStartMenuShortcut: true
+  # 安装完成后运行应用
+  runAfterFinish: true
+  # 简体中文界面
+  language: '2052'
+  # 安装程序文件名模板（区分 64位/32位）
+  artifactName: ${productName}-Setup-${version}-${arch}.${ext}
+
+# 压缩配置（最大压缩，减小体积）
+compression: maximum
+
+# 自动更新发布配置
+# electron-updater 会从该地址请求 latest.yml 并下载更新包
+publish:
+  - provider: generic
+    url: http://117.72.202.12:3000/updates/
+
+# 是否生成 portable 版本（免安装绿色版）
+# 取消注释即可同时生成 portable 版本
+# portable:
+#   artifactName: ${productName}-Portable-${version}.${ext}

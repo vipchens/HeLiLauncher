@@ -1,0 +1,128 @@
+/**
+ * 全局样式
+ * 定义登录器主题配色、滚动条、通用工具类
+ * 采用魔兽世界暗色系风格
+ */
+
+// ================ CSS 变量（主题色） ================
+:root {
+  // 主色调 - 金色系
+  --color-primary: #ffd700;
+  --color-primary-light: #d4af37;
+  --color-primary-dark: #8b7355;
+
+  // 背景色 - 深棕系
+  --color-bg-dark: #0f0a06;
+  --color-bg: #1a120a;
+  --color-bg-medium: #221810;
+  --color-bg-light: #2e2216;
+  --color-bg-card: #2e2216;
+
+  // 文字色
+  --color-text-primary: #f0e4d0;
+  --color-text-secondary: #b09878;
+  --color-text-tertiary: #8a7458;
+  --color-text-muted: #6a5a40;
+
+  // 边框色
+  --color-border: #3d2e1f;
+  --color-border-light: #2e2216;
+
+  // 状态色
+  --color-success: #27ae60;
+  --color-warning: #e67e22;
+  --color-danger: #e74c3c;
+  --color-info: #3498db;
+
+  // 尺寸
+  --sidebar-width: 72px;
+  --launchbar-height: 64px;
+  --content-radius: 14px;
+}
+
+// ================ 全局重置 ================
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-primary);
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+// ================ 自定义滚动条 ================
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+
+  &:hover {
+    background: var(--color-primary-dark);
+  }
+}
+
+// ================ Element Plus 主题覆盖 ================
+.el-button--primary {
+  --el-button-bg-color: var(--color-primary);
+  --el-button-border-color: var(--color-primary);
+  --el-button-hover-bg-color: var(--color-primary-light);
+  --el-button-hover-border-color: var(--color-primary-light);
+  --el-button-active-bg-color: var(--color-primary-dark);
+  --el-button-active-border-color: var(--color-primary-dark);
+}
+
+.el-card {
+  --el-card-bg-color: var(--color-bg-card);
+  --el-card-border-color: var(--color-border);
+  background-color: var(--color-bg-card) !important;
+  color: var(--color-text-primary) !important;
+}
+
+// ================ 通用工具类 ================
+.text-success {
+  color: var(--color-success);
+}
+.text-warning {
+  color: var(--color-warning);
+}
+.text-danger {
+  color: var(--color-danger);
+}
+.text-muted {
+  color: var(--color-text-secondary);
+}
+
+.flex {
+  display: flex;
+}
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

@@ -1,0 +1,43 @@
+{
+  "name": "wow-launcher",
+  "version": "1.0.3",
+  "description": "河狸乐园WLK怀旧服 - 综合登录器",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:1420 && cross-env ELECTRON_DEV=1 ELECTRON_DEV_SERVER_IP=127.0.0.1 electron electron/main.cjs\"",
+    "electron:dev:prod": "concurrently \"vite\" \"wait-on http://localhost:1420 && cross-env ELECTRON_DEV=1 ELECTRON_DEV_SERVER_IP=117.72.202.12 electron electron/main.cjs\"",
+    "electron:build": "vue-tsc -b && vite build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/ ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-binaries/ electron-builder",
+    "electron:build:win": "vue-tsc -b && vite build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/ ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-binaries/ electron-builder --win --x64 --ia32",
+    "asar:pack": "node scripts/pack-asar.cjs",
+    "electron:asar-build": "vue-tsc -b && vite build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/ ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-binaries/ electron-builder --win --x64 --ia32 && node scripts/pack-asar.cjs"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "axios": "^1.7.9",
+    "electron-updater": "^4.4.1",
+    "element-plus": "^2.9.5",
+    "entities": "^8.0.0",
+    "markdown-it": "^15.0.0",
+    "path-browserify": "^1.0.1",
+    "pinia": "^2.3.1",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "concurrently": "^10.0.4",
+    "cross-env": "^10.1.0",
+    "electron": "^22.3.27",
+    "electron-builder": "^24.13.3",
+    "sass": "^1.83.4",
+    "typescript": "~5.7.3",
+    "vite": "^6.1.0",
+    "vue-tsc": "^2.2.0",
+    "wait-on": "^9.1.0"
+  }
+}
