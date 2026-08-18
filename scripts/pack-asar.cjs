@@ -42,8 +42,8 @@ const DIST = path.join(OUT, 'asar');
 
 const PKG = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf-8'));
 const VERSION = PKG.version;
-const OWNER   = cli.owner || process.env.GH_OWNER || 'your-name';
-const REPO    = cli.repo  || process.env.GH_REPO  || 'AZ_335WebClient';
+const OWNER   = cli.owner || process.env.GH_OWNER || 'vipchens';
+const REPO    = cli.repo  || process.env.GH_REPO  || 'HeLiLauncher';
 const BRANCH  = cli.branch || process.env.GH_BRANCH || 'main';
 const TAG     = 'v' + VERSION;
 const REQ_MIN = cli.reqMinVer || (VERSION.split('.').slice(0,2).join('.') + '.0');
@@ -70,12 +70,18 @@ const stat = fs.statSync(TARGET_ASAR);
 const size = stat.size;
 const sha512 = crypto.createHash('sha512').update(fs.readFileSync(TARGET_ASAR)).digest('base64');
 
-// asar 文件 CDN 列表（注意：jsDelivr 单文件 < 50MB 才走加速，asar <20MB 没问题）
+// asar 文件 CDN 列表
+// 【核心】主通道：仓库 raw 分支（jsDelivr 对仓库源码树单文件放宽到 100MB，比 Release 附件的 50MB 宽 1 倍）
+// 要求：app-{version}.asar 必须和 asar-latest.json 一起提交到仓库 {BRANCH} 分支的 updates/asar/ 目录下
+// 兜底通道：Release 附件（50MB 限制，最后 fallback）
 const asarName = `app-${VERSION}.asar`;
 const asarUrls = [
-  `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${TAG}/updates/asar/${asarName}`,
-  `https://fastly.jsdelivr.net/gh/${OWNER}/${REPO}@${TAG}/updates/asar/${asarName}`,
-  `https://gcore.jsdelivr.net/gh/${OWNER}/${REPO}@${TAG}/updates/asar/${asarName}`,
+  // --- 第 1 梯队：仓库源码树 raw 分支（100MB 限制，体积优化后必命中）---
+  `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${BRANCH}/updates/asar/${asarName}`,
+  `https://fastly.jsdelivr.net/gh/${OWNER}/${REPO}@${BRANCH}/updates/asar/${asarName}`,
+  `https://gcore.jsdelivr.net/gh/${OWNER}/${REPO}@${BRANCH}/updates/asar/${asarName}`,
+  `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/updates/asar/${asarName}`,
+  // --- 第 2 梯队：Release 附件（50MB 限制，仅最后兜底）---
   `https://mirror.ghproxy.com/https://github.com/${OWNER}/${REPO}/releases/download/${TAG}/${asarName}`,
   `https://ghproxy.com/https://github.com/${OWNER}/${REPO}/releases/download/${TAG}/${asarName}`,
   `https://github.com/${OWNER}/${REPO}/releases/download/${TAG}/${asarName}`,
@@ -119,62 +125,74 @@ console.log('   github.owner/repo  =', OWNER + '/' + REPO + ' @ ' + TAG);
 console.log('');
 
 // ---------- 发布指南 ----------
-const REPO_TREE = `仓库根目录下新建（如未存在）：
+const REPO_TREE = `仓库根目录下（如未存在则新建）：
   updates/
     asar/
       asar-latest.json       ← 把 release-new/asar/asar-latest.json 拷到这里
+      app-${VERSION}.asar    ← ⚠️ 必须同时把 asar 文件也放进来！（raw 分支走 CDN 限制 100MB，比 Release 附件的 50MB 宽 1 倍，不会再报超限）
 `;
 const RELEASE_GUIDE = `
 ────────────────────────────────────────────────────────────────
-  📌 发布步骤（结合 GitHub + 免费 CDN 方案）
+  📌 发布步骤（纯 CDN · 免费方案 · 不依赖 AccountServer）
 ────────────────────────────────────────────────────────────────
 
-1️⃣  提交 & 打 tag：
-     git add -A
-     git commit -m "chore(release): ${TAG}"
-     git tag ${TAG}
-     git push origin ${BRANCH} --tags
-
-2️⃣  把 asar-latest.json 推到仓库源码树（让 jsdelivr raw 能命中）：
-     将仓库根目录按如下结构提交 & push：
-       updates/asar/asar-latest.json     <——— 将 ${path.relative(ROOT, META_PATH)} 复制过去
-     （注：提交后访问 https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${BRANCH}/updates/asar/asar-latest.json
-           应能 200 看到 JSON；如果 404 等 1-5 分钟，或者手动 purge jsdelivr 缓存）
-
-3️⃣  GitHub 创建 Release：
-     - Target: ${BRANCH}    Tag: ${TAG}    Title: ${TAG}
-     - 描述写什么都行（建议是 ${NOTES ? '你配置的 notes' : '更新说明'}）
-     - Release 附件（Assets）上传 3 个文件：
-         a) release-new/asar/app-${VERSION}.asar                    <— asar 增量包（<20MB，CDN 能加速）
-         b) release-new/${SETUP_EXE_X64}                             <— x64 完整安装器（>100MB，gh-proxy 能加速）
-         c) release-new/latest.yml                                   <— 可选，老用户 NSIS 兜底用
-
-4️⃣  客户端配置（登录器 → 设置 → 写 config.json 也行）：
-     用户 config.json 加（或以后我帮你在 SettingsView 里加图形化配置）：
-        {
-          "update": {
-            "github": {
-              "owner": "${OWNER}",
-              "repo":  "${REPO}",
-              "rawBranch": "${BRANCH}"
-            }
-          }
-        }
-     （客户端会自动从 jsdelivr → fastly → ghproxy → GitHub Release 4 层 fallback）
-
-5️⃣  验证：
-     浏览器打开：
-       元数据（CDN 加速）：https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${BRANCH}/updates/asar/asar-latest.json
-       asar 附件（CDN 加速）：https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${TAG}/updates/asar/app-${VERSION}.asar
-       asar 附件（ghproxy，>50MB 兜底）：https://mirror.ghproxy.com/https://github.com/${OWNER}/${REPO}/releases/download/${TAG}/app-${VERSION}.asar
-       完整 exe（ghproxy）：https://mirror.ghproxy.com/https://github.com/${OWNER}/${REPO}/releases/download/${TAG}/${encodeURIComponent(SETUP_EXE_X64)}
-     全部能 200 下载，就完成啦 🎉
+【本次产物】
+   version        = ${meta.version}
+   asar 体积      = ${(size/1024/1024).toFixed(2)} MB
+   jsdelivr 限额  = 100 MB（raw 仓库源码树，本版本 ✅ 预留充足余量）
 
 ────────────────────────────────────────────────────────────────
+1️⃣  把 asar 两个文件【一起】提交到仓库源码树（让 CDN 从 raw 分支取）：
+
+   目标位置（必须放在同一个目录！）：
+     └─ HeLiLauncher/               ← 你的仓库根
+        └─ updates/
+           └─ asar/
+              ├─ asar-latest.json   <—— 复制 release-new/asar/asar-latest.json
+              └─ app-${VERSION}.asar  <—— ⚠️ 复制 release-new/asar/app-${VERSION}.asar（不能只放 Release 附件！）
+
+   提交 & push 到 main 分支：
+     git add updates/asar/
+     git commit -m "chore(updater): asar v${VERSION}"
+     git push origin ${BRANCH}
+
+   ⏳ 等待 30~120 秒（jsdelivr 需要同步新文件缓存）。
+   测试 CDN 是否生效：
+     浏览器打开 → https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${BRANCH}/updates/asar/asar-latest.json
+     浏览器打开 → https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${BRANCH}/updates/asar/app-${VERSION}.asar
+     都能 200 → 这一步完成 ✅。
+   如果返回旧版本 → 手动 purge：curl "https://purge.jsdelivr.net/gh/${OWNER}/${REPO}@${BRANCH}/updates/asar/asar-latest.json"
+
+────────────────────────────────────────────────────────────────
+2️⃣  （可选，但强烈建议）创建 GitHub Release 作为最后兜底：
+
+   打开 https://github.com/${OWNER}/${REPO}/releases/new
+   - Tag:     ${TAG}
+   - Target:  ${BRANCH}
+   - Title:   河狸乐园登录器 ${TAG}
+   - 附件上传：
+       a) release-new/asar/app-${VERSION}.asar       ← asar 增量包（Release 附件兜底用，CDN 不再依赖它）
+       b) release-new/${SETUP_EXE_X64}                ← x64 完整安装器（NSIS 通道）
+       c) release-new/河狸乐园登录器-Setup-${VERSION}-ia32.exe  ← ia32 完整安装器
+       d) release-new/latest.yml                      ← NSIS 通道版本清单
+
+────────────────────────────────────────────────────────────────
+3️⃣  纯 CDN 更新链路（客户端已自动按优先级 fallback）：
+   🟢 优先级 1~3：cdn.jsdelivr / fastly.jsdelivr / gcore.jsdelivr
+      （都从仓库 raw 分支取，100MB 限制，不会再 50MB 超限）
+   🟢 优先级 4  ：raw.githubusercontent（GitHub raw 直连，绕过 CDN）
+   🟡 优先级 5~6：ghproxy.com（Release 附件代理，最后兜底）
+   ⚫ 优先级 7  ：GitHub Release 直链（最慢，但一定能下载到）
+
+────────────────────────────────────────────────────────────────
+4️⃣  客户端方式 B 兜底验证（老用户 config.json 没写 update.github 也行）：
+   在客户端 DevTools 执行：
+     await window.electronAPI.readConfig()
+   应返回 { update: { github: { owner: 'vipchens', repo: 'HeLiLauncher', rawBranch: 'main' } } }
+   → 说明兜底注入成功，老用户零配置自动启用 asar 增量热更新 ✅
 `;
 console.log(RELEASE_GUIDE);
-if (OWNER === 'your-name' || REPO === 'AZ_335WebClient') {
-  console.warn('⚠️  注意：你没填 owner/repo，上面 URL 里是占位，下次构建请加参数：');
-  console.warn('    node scripts/pack-asar.cjs --owner=你GitHub用户名 --repo=仓库名 --branch=main');
-  console.warn('  或设置环境变量 GH_OWNER / GH_REPO / GH_BRANCH');
+if (OWNER !== 'vipchens' || REPO !== 'HeLiLauncher') {
+  console.warn('⚠️  注意：当前使用的 owner/repo 非默认值（vipchens/HeLiLauncher），请确认与 GitHub 实际仓库一致：');
+  console.warn('    owner=' + OWNER + '  repo=' + REPO + '  branch=' + BRANCH);
 }

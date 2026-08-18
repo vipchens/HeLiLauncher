@@ -15,12 +15,23 @@ directories:
   buildResources: build
 
 # 需要打包的文件
-# - dist/: Vue 前端构建输出
-# - electron/: Electron 主进程代码
+# - dist/: Vue 前端构建输出（不含 sourcemap，见 vite.config.ts）
+# - electron/: Electron 主进程代码 + preload + IPC（.cjs）
+# - package.json：版本号与依赖声明（electron-builder 会自动精简）
 files:
   - dist/**/*
   - electron/**/*
   - package.json
+  # 排除不必要的隐藏文件/日志/临时文件，进一步压缩 app.asar 体积
+  - "!**/*.md"
+  - "!**/node_modules/**"     # 显式排除防止误打包（files 默认不走 node_modules，但加了保险）
+  - "!**/*.{log,tmp,DS_Store,Thumbs.db}"
+  - "!**/._*"
+
+# 显式开启 asar 打包（默认 true，保险起见写死）
+asar: true
+# 原生模块不需要解包（本项目无原生 C++ addon）
+asarUnpack: []
 
 # 额外资源（图标等）
 extraResources:

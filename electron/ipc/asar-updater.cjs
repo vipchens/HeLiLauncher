@@ -102,17 +102,23 @@ function buildMetaUrlsFromConfig(cfg, meta) {
   const tag    = g.releaseTag || 'v' + meta.version;
   const app    = `app-${meta.version}.asar`;
 
-  // asar 元数据 URL：一般放仓库源码树里（非 Release 附件），走 raw 分支
+  // asar 元数据 URL：放仓库源码树（main 分支 updates/asar/asar-latest.json），走 raw 分支
   const asarMeta = [
     `https://cdn.jsdelivr.net/gh/${owner}/${repo}@${branch}/updates/asar/asar-latest.json`,
     `https://fastly.jsdelivr.net/gh/${owner}/${repo}@${branch}/updates/asar/asar-latest.json`,
+    `https://gcore.jsdelivr.net/gh/${owner}/${repo}@${branch}/updates/asar/asar-latest.json`,
     `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/updates/asar/asar-latest.json`,
   ];
 
-  // asar 包 URL：4 层 fallback（CDN → gh-proxy → GitHub Release 直链）
+  // asar 包 URL：【优先仓库源码树 raw（jsDelivr 对 raw 单文件放宽到 100MB）→ Release 附件兜底（50MB 限制）】
+  // 注意：app-{version}.asar 必须和 asar-latest.json 一起提交到仓库 main 分支的 updates/asar/ 目录下
   const asarFile = [
-    `https://cdn.jsdelivr.net/gh/${owner}/${repo}@${tag}/updates/asar/${app}`,
-    `https://fastly.jsdelivr.net/gh/${owner}/${repo}@${tag}/updates/asar/${app}`,
+    // 第 1 梯队：raw 仓库源码树（100MB 限制，体积优化后 asar 一般 20~60MB，全部命中）
+    `https://cdn.jsdelivr.net/gh/${owner}/${repo}@${branch}/updates/asar/${app}`,
+    `https://fastly.jsdelivr.net/gh/${owner}/${repo}@${branch}/updates/asar/${app}`,
+    `https://gcore.jsdelivr.net/gh/${owner}/${repo}@${branch}/updates/asar/${app}`,
+    `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/updates/asar/${app}`,
+    // 第 2 梯队：Release 附件（50MB 限制，仅作为最后兜底，以防用户漏提交到仓库树）
     `https://mirror.ghproxy.com/https://github.com/${owner}/${repo}/releases/download/${tag}/${app}`,
     `https://ghproxy.com/https://github.com/${owner}/${repo}/releases/download/${tag}/${app}`,
     `https://github.com/${owner}/${repo}/releases/download/${tag}/${app}`,

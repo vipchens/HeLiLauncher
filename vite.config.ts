@@ -20,11 +20,23 @@ export default defineConfig({
   build: {
     target: 'es2021',
     outDir: 'dist',
+    // 生产关闭 sourcemap，避免带大体积 .map 文件（直接让 app.asar 减 10~30MB）
+    sourcemap: false,
+    // terser 比 esbuild 默认压缩更小（drop console 再省一点）
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
     // Electron 不需要代码分割，生成单个文件更简单
     rollupOptions: {
       output: {
         manualChunks: undefined,
       },
     },
+    // 避免单 chunk 大了输出告警（不影响产物）
+    chunkSizeWarningLimit: 5000,
   },
 })

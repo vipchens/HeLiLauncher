@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "version": "1.0.3",
-  "releaseDate": "2026-08-18T16:44:02.903Z",
+  "releaseDate": "2026-08-18T23:37:00.421Z",
   "requiredMinVersion": "1.0.0",
   "notes": "优化登录器兼容性，提供自动更新方案",
   "product": "河狸乐园登录器",
@@ -13,12 +13,13 @@
   },
   "asar": {
     "fileName": "app-1.0.3.asar",
-    "size": 70907035,
-    "sha512": "2hgZzOeh4zlM158OxAXksqiAIqxG4PyvWqZ8fksk160LA5Dr5B8VNgf7ej8RP6tC7MA30zvbtULsxXAzHT24qQ==",
+    "size": 1906515,
+    "sha512": "3mKGTz+5dXnf2Q37xXLWYcM/HS2N5HLGC00PjWtac0wtc2nqAeaOYg1wSVTucUdw9fxN7XUkKEfiyCZXt136Cg==",
     "urls": [
-      "https://cdn.jsdelivr.net/gh/vipchens/HeLiLauncher@v1.0.3/updates/asar/app-1.0.3.asar",
-      "https://fastly.jsdelivr.net/gh/vipchens/HeLiLauncher@v1.0.3/updates/asar/app-1.0.3.asar",
-      "https://gcore.jsdelivr.net/gh/vipchens/HeLiLauncher@v1.0.3/updates/asar/app-1.0.3.asar",
+      "https://cdn.jsdelivr.net/gh/vipchens/HeLiLauncher@main/updates/asar/app-1.0.3.asar",
+      "https://fastly.jsdelivr.net/gh/vipchens/HeLiLauncher@main/updates/asar/app-1.0.3.asar",
+      "https://gcore.jsdelivr.net/gh/vipchens/HeLiLauncher@main/updates/asar/app-1.0.3.asar",
+      "https://raw.githubusercontent.com/vipchens/HeLiLauncher/main/updates/asar/app-1.0.3.asar",
       "https://mirror.ghproxy.com/https://github.com/vipchens/HeLiLauncher/releases/download/v1.0.3/app-1.0.3.asar",
       "https://ghproxy.com/https://github.com/vipchens/HeLiLauncher/releases/download/v1.0.3/app-1.0.3.asar",
       "https://github.com/vipchens/HeLiLauncher/releases/download/v1.0.3/app-1.0.3.asar"
