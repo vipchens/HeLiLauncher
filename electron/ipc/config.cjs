@@ -33,6 +33,13 @@ const DEFAULT_CONFIG = {
     maxRetry: 5,
     backupEnabled: true,
   },
+  update: {
+    github: {
+      owner: 'vipchens',
+      repo: 'HeLiLauncher',
+      rawBranch: 'main',
+    },
+  },
   lastCheckTime: null,
 };
 
@@ -53,11 +60,19 @@ async function readConfig() {
       }
       delete parsed.serverUrl;
     }
-    // 合并默认值，防止新增字段缺失
+    // 合并默认值，防止新增字段缺失（深层合并：settings / update.github）
     const merged = {
       ...DEFAULT_CONFIG,
       ...parsed,
-      settings: { ...DEFAULT_CONFIG.settings, ...parsed.settings },
+      settings: { ...DEFAULT_CONFIG.settings, ...(parsed.settings || {}) },
+      update: {
+        ...DEFAULT_CONFIG.update,
+        ...(parsed.update || {}),
+        github: {
+          ...DEFAULT_CONFIG.update.github,
+          ...((parsed.update && parsed.update.github) || {}),
+        },
+      },
     };
     // 开发模式下，环境变量覆盖 serverIp（本地调试 vs 生产调试）
     if (process.env.ELECTRON_DEV_SERVER_IP) {

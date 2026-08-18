@@ -260,6 +260,13 @@ export interface LauncherSettings {
     maxRetry: number
     backupEnabled: boolean
   }
+  update: {
+    github: {
+      owner: string
+      repo: string
+      rawBranch: string
+    }
+  }
   lastCheckTime: string | null
 }
 
