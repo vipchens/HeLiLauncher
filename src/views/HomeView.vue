@@ -526,30 +526,36 @@ onMounted(loadData)
 .toc-item {
   padding: 6px 10px;
   font-size: 12px;
-  color: var(--color-text-secondary);
+  /* 默认文字色提亮：从 var(--color-text-secondary) 改到 #dcc5a0（浅棕米黄），对比度翻倍 */
+  color: #dcc5a0;
   cursor: pointer;
   border-radius: 6px;
   border-left: 2px solid transparent;
   transition: all 0.2s ease;
-  line-height: 1.4;
+  line-height: 1.45;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-weight: 500;
 
   &:hover {
-    background: rgba(255, 215, 0, 0.08);
-    color: var(--color-text-primary);
+    background: rgba(255, 215, 0, 0.12);
+    color: #faf3e6;   /* 悬停变米白 */
+    border-left-color: #c29a64;
   }
 
   &.active {
-    background: rgba(255, 215, 0, 0.12);
-    color: var(--color-primary);
+    background: rgba(255, 215, 0, 0.18);
+    color: #ffd700;   /* 选中保持纯金，更显眼 */
     border-left-color: var(--color-primary);
+    font-weight: 700;
   }
 
   &.toc-level-1 {
     font-weight: 700;
     font-size: 13px;
+    /* 一级目录文字更亮，区分层级 */
+    color: #f0dcaa;
   }
 
   &.toc-level-2 {
@@ -559,13 +565,14 @@ onMounted(loadData)
   &.toc-level-3 {
     padding-left: 26px;
     font-size: 11px;
-    color: var(--color-text-tertiary);
+    /* 三四级也别太灰，从 tertiary 提亮到能看清 */
+    color: #bfa67e;
   }
 
   &.toc-level-4 {
     padding-left: 34px;
     font-size: 11px;
-    color: var(--color-text-tertiary);
+    color: #bfa67e;
   }
 }
 
@@ -585,55 +592,61 @@ onMounted(loadData)
 .reader-content {
   flex: 1;
   min-width: 0;
-  color: var(--color-text-primary);
+  /* 主文字色从 #f0e4d0 提亮到 #faf3e6（对比度显著提升） */
+  color: #faf3e6;
   font-size: 14px;
-  line-height: 1.8;
+  line-height: 1.85;
   user-select: text;
   -webkit-user-select: text;
 
   :deep(h1) {
     font-size: 22px;
     font-weight: 800;
-    color: var(--color-primary);
+    color: #ffd700;
     margin: 16px 0 12px;
-    text-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.25);
     scroll-margin-top: 16px;
   }
 
   :deep(h2) {
     font-size: 18px;
     font-weight: 700;
-    color: var(--color-primary-light);
+    color: #f4cf6b;
     margin: 14px 0 10px;
     padding-bottom: 6px;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid #5a4a30;
     scroll-margin-top: 16px;
   }
 
   :deep(h3) {
     font-size: 16px;
     font-weight: 700;
-    color: var(--color-text-primary);
+    color: #ffe0a0;
     margin: 12px 0 8px;
     scroll-margin-top: 16px;
   }
 
   :deep(p) {
     margin: 8px 0;
+    /* 正文单独指定，避免继承暗色调 */
+    color: #faf3e6;
   }
 
   :deep(ul), :deep(ol) {
     margin: 8px 0;
     padding-left: 24px;
+    color: #faf3e6;
 
     li {
       margin: 4px 0;
+      color: #faf3e6;
     }
   }
 
   :deep(a) {
-    color: #3498db;
+    color: #4aa3ff;
     text-decoration: none;
+    font-weight: 600;
 
     &:hover {
       text-decoration: underline;
@@ -643,10 +656,10 @@ onMounted(loadData)
   :deep(blockquote) {
     margin: 12px 0;
     padding: 10px 16px;
-    background: var(--color-bg-light);
-    border-left: 3px solid var(--color-primary-light);
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 3px solid #d4af37;
     border-radius: 4px;
-    color: var(--color-text-secondary);
+    color: #e8d9ba;
   }
 
   :deep(table) {
@@ -656,22 +669,32 @@ onMounted(loadData)
     font-size: 13px;
 
     th {
-      background: var(--color-bg-light);
-      color: var(--color-primary-light);
+      background: #3a2a18;
+      color: #ffd700;
       font-weight: 700;
       padding: 10px 14px;
-      border: 1px solid var(--color-border);
-      text-align: left;
+      border: 1px solid #5a4a30;
+      /* 统一左对齐（标题和数值列一样靠左，不居中、不靠右） */
+      text-align: left !important;
+      vertical-align: middle;
     }
 
     td {
       padding: 8px 14px;
-      border: 1px solid var(--color-border);
-      color: var(--color-text-secondary);
+      border: 1px solid #5a4a30;
+      /* 表格内容全部左对齐，不依赖 Markdown 的 :---/---: */
+      text-align: left !important;
+      vertical-align: middle;
+      color: #faf3e6;
+      font-weight: 500;
     }
 
     tr:nth-child(even) td {
-      background: rgba(0, 0, 0, 0.15);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    tr:nth-child(odd) td {
+      background: rgba(0, 0, 0, 0.08);
     }
   }
 
@@ -679,33 +702,34 @@ onMounted(loadData)
     max-width: 100%;
     border-radius: 8px;
     margin: 8px 0;
+    border: 1px solid #5a4a30;
   }
 
   :deep(code) {
     padding: 2px 6px;
-    background: var(--color-bg-dark);
+    background: rgba(0, 0, 0, 0.35);
     border-radius: 4px;
     font-size: 13px;
-    color: var(--color-primary);
+    color: #ffd700;
   }
 
   :deep(pre) {
     padding: 12px 16px;
-    background: var(--color-bg-dark);
-    border: 1px solid var(--color-border);
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid #5a4a30;
     border-radius: 8px;
     overflow-x: auto;
 
     code {
       padding: 0;
       background: none;
-      color: var(--color-text-primary);
+      color: #faf3e6;
     }
   }
 
   :deep(hr) {
     border: none;
-    border-top: 1px solid var(--color-border);
+    border-top: 1px solid #5a4a30;
     margin: 16px 0;
   }
 }

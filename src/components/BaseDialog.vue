@@ -126,13 +126,15 @@ onBeforeUnmount(() => {
 .base-dialog {
   position: relative;
   max-height: calc(100vh - 48px);
-  background: linear-gradient(180deg, #3d2e1f 0%, #1f160d 100%);
-  border: 2px solid #7a6448;
+  /* 调亮背景：从 #3d2e1f → #4d3a24 / #1f160d → #2c2014，对比度更大，文字更清楚 */
+  background: linear-gradient(180deg, #5a422a 0%, #2e2012 100%);
+  border: 2px solid #8e7652;
   border-radius: 10px;
   box-shadow:
-    0 0 0 1px #a08060,
-    0 20px 60px rgba(0, 0, 0, 0.9),
-    inset 0 0 60px rgba(0, 0, 0, 0.25);
+    0 0 0 1px #c29a64,
+    0 20px 60px rgba(0, 0, 0, 0.85),
+    inset 0 0 30px rgba(255, 255, 255, 0.04),
+    inset 0 0 60px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   overflow: hidden;

@@ -1,6 +1,6 @@
 {
   "name": "wow-launcher",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "河狸乐园WLK怀旧服 - 综合登录器",
   "type": "module",
   "main": "electron/main.cjs",
