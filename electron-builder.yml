@@ -27,9 +27,20 @@ files:
   - "!scripts/**/*"              # 构建辅助脚本（客户端运行时不用）
   - "!public/**/*"               # Vite 已拷贝到 dist/，源目录不重复打包
   - "!release-new/**/*"          # 构建产物不自引用
+  - "!updates/**/*"              # ⚠️ 关键：updates/asar/*.asar 不能再次被打进去（递归自包含，增加 70MB+）
   - "!.electron-builder-cache/**/*"
   - "!electron-cache/**/*"
   - "!electron-extract-temp/**/*"
+  - "!build/**/*"                # build/ 里的 icon 只通过 extraResources 引用，files 里不需要重复
+  - "!data/**/*"                 # 防止本地临时数据目录误打
+  - "!backup*/**/*"              # 防止备份目录
+  # --- 排除开发/配置类文件（.ts 源码只用于编译，运行时不需要） ---
+  - "!*.ts"                      # tsconfig.tsbuildinfo / vite.config.ts / env.d.ts
+  - "!tsconfig*.json"
+  - "!*.config.{js,ts,mjs,cjs}"  # vite / postcss 等配置
+  - "!*.sln;!*.suo;!*.user;!*.pdb"
+  # --- 排除项目根目录的说明文件（大体积 txt 等） ---
+  - "!*.txt"
   # --- 排除 node_modules 里典型的垃圾文件（体积能再减 1~3MB）---
   - "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,History.md,CHANGELOG,CHANGES,LICENSE,LICENCE,license,NOTICE}"
   - "!**/node_modules/*/{test,tests,spec,specs,example,examples,doc,docs,benchmark,benchmarks,coverage,__tests__,.github}/**"

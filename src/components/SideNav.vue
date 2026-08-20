@@ -12,7 +12,7 @@ const route = useRoute()
 
 // 导航项配置（与路由 meta 对应）
 const navItems = [
-  { path: '/home', icon: 'HomeFilled', label: '公告' },
+  { path: '/home', icon: 'HomeFilled', label: '公告2' },
   { path: '/patch', icon: 'Download', label: '补丁' },
   { path: '/account', icon: 'User', label: '账号' },
   { path: '/online', icon: 'UserFilled', label: '在线' },

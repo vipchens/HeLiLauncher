@@ -126,15 +126,16 @@ onBeforeUnmount(() => {
 .base-dialog {
   position: relative;
   max-height: calc(100vh - 48px);
-  /* 调亮背景：从 #3d2e1f → #4d3a24 / #1f160d → #2c2014，对比度更大，文字更清楚 */
-  background: linear-gradient(180deg, #5a422a 0%, #2e2012 100%);
-  border: 2px solid #8e7652;
+  /* 再次加深背景（用户反馈还是太浅）：回到深棕系但保持描边更清晰，
+     文字区颜色在 HomeView.vue reader-content 里是单独指定的米白 #faf3e6，
+     所以这里只调深背景不影响可读性，对比度反而更高 */
+  background: linear-gradient(180deg, #3d2b1b 0%, #1f160c 100%);
+  border: 2px solid #82674a;
   border-radius: 10px;
   box-shadow:
-    0 0 0 1px #c29a64,
-    0 20px 60px rgba(0, 0, 0, 0.85),
-    inset 0 0 30px rgba(255, 255, 255, 0.04),
-    inset 0 0 60px rgba(0, 0, 0, 0.2);
+    0 0 0 1px #a88760,
+    0 20px 60px rgba(0, 0, 0, 0.9),
+    inset 0 0 40px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
   overflow: hidden;

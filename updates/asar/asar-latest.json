@@ -1,36 +1,36 @@
 {
   "schemaVersion": 1,
-  "version": "1.0.5",
-  "releaseDate": "2026-08-19T23:31:50.919Z",
+  "version": "1.0.10",
+  "releaseDate": "2026-08-20T14:20:41.826Z",
   "requiredMinVersion": "1.0.0",
   "notes": "优化登录器兼容性，提供自动更新方案",
   "product": "河狸乐园登录器",
   "github": {
     "owner": "vipchens",
     "repo": "HeLiLauncher",
-    "releaseTag": "v1.0.5",
+    "releaseTag": "v1.0.10",
     "rawBranch": "main"
   },
   "asar": {
-    "fileName": "app-1.0.5.asar",
-    "size": 72283361,
-    "sha512": "z6qIv1stvXzjM0PwcqUAVsctUmeHOX0Tiy3wQgjKo7BbX1QH7oC1SUIlYaMPXSWn0RikZ3J2YRNDdY3rx9YF6A==",
+    "fileName": "app-1.0.10.asar",
+    "size": 5879226,
+    "sha512": "8wUz2vZO3d6d/mEMZuW9VhmILztQgeKtASZ1G/ngHCA/7Rr4opTr6F5xKK359Jsrc6eMYDcj8ozplwvXvvngFQ==",
     "urls": [
-      "https://cdn.jsdelivr.net/gh/vipchens/HeLiLauncher@main/updates/asar/app-1.0.5.asar",
-      "https://fastly.jsdelivr.net/gh/vipchens/HeLiLauncher@main/updates/asar/app-1.0.5.asar",
-      "https://gcore.jsdelivr.net/gh/vipchens/HeLiLauncher@main/updates/asar/app-1.0.5.asar",
-      "https://raw.githubusercontent.com/vipchens/HeLiLauncher/main/updates/asar/app-1.0.5.asar",
-      "https://mirror.ghproxy.com/https://github.com/vipchens/HeLiLauncher/releases/download/v1.0.5/app-1.0.5.asar",
-      "https://ghproxy.com/https://github.com/vipchens/HeLiLauncher/releases/download/v1.0.5/app-1.0.5.asar",
-      "https://github.com/vipchens/HeLiLauncher/releases/download/v1.0.5/app-1.0.5.asar"
+      "https://cdn.jsdelivr.net/gh/vipchens/HeLiLauncher@main/updates/asar/app-1.0.10.asar",
+      "https://fastly.jsdelivr.net/gh/vipchens/HeLiLauncher@main/updates/asar/app-1.0.10.asar",
+      "https://gcore.jsdelivr.net/gh/vipchens/HeLiLauncher@main/updates/asar/app-1.0.10.asar",
+      "https://raw.githubusercontent.com/vipchens/HeLiLauncher/main/updates/asar/app-1.0.10.asar",
+      "https://mirror.ghproxy.com/https://github.com/vipchens/HeLiLauncher/releases/download/v1.0.10/app-1.0.10.asar",
+      "https://ghproxy.com/https://github.com/vipchens/HeLiLauncher/releases/download/v1.0.10/app-1.0.10.asar",
+      "https://github.com/vipchens/HeLiLauncher/releases/download/v1.0.10/app-1.0.10.asar"
     ]
   },
   "nsis": {
-    "fileName": "河狸乐园登录器-Setup-1.0.5-x64.exe",
+    "fileName": "河狸乐园登录器-Setup-1.0.10-x64.exe",
     "urls": [
-      "https://mirror.ghproxy.com/https://github.com/vipchens/HeLiLauncher/releases/download/v1.0.5/%E6%B2%B3%E7%8B%B8%E4%B9%90%E5%9B%AD%E7%99%BB%E5%BD%95%E5%99%A8-Setup-1.0.5-x64.exe",
-      "https://ghproxy.com/https://github.com/vipchens/HeLiLauncher/releases/download/v1.0.5/%E6%B2%B3%E7%8B%B8%E4%B9%90%E5%9B%AD%E7%99%BB%E5%BD%95%E5%99%A8-Setup-1.0.5-x64.exe",
-      "https://github.com/vipchens/HeLiLauncher/releases/download/v1.0.5/%E6%B2%B3%E7%8B%B8%E4%B9%90%E5%9B%AD%E7%99%BB%E5%BD%95%E5%99%A8-Setup-1.0.5-x64.exe"
+      "https://mirror.ghproxy.com/https://github.com/vipchens/HeLiLauncher/releases/download/v1.0.10/%E6%B2%B3%E7%8B%B8%E4%B9%90%E5%9B%AD%E7%99%BB%E5%BD%95%E5%99%A8-Setup-1.0.10-x64.exe",
+      "https://ghproxy.com/https://github.com/vipchens/HeLiLauncher/releases/download/v1.0.10/%E6%B2%B3%E7%8B%B8%E4%B9%90%E5%9B%AD%E7%99%BB%E5%BD%95%E5%99%A8-Setup-1.0.10-x64.exe",
+      "https://github.com/vipchens/HeLiLauncher/releases/download/v1.0.10/%E6%B2%B3%E7%8B%B8%E4%B9%90%E5%9B%AD%E7%99%BB%E5%BD%95%E5%99%A8-Setup-1.0.10-x64.exe"
     ]
   }
 }

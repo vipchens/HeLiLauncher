@@ -1,6 +1,6 @@
 {
   "name": "wow-launcher",
-  "version": "1.0.5",
+  "version": "1.0.10",
   "description": "河狸乐园WLK怀旧服 - 综合登录器",
   "type": "module",
   "main": "electron/main.cjs",
@@ -16,27 +16,27 @@
     "electron:asar-build": "vue-tsc -b && vite build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/ ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-binaries/ electron-builder --win --x64 --ia32 && node scripts/pack-asar.cjs"
   },
   "dependencies": {
-    "@element-plus/icons-vue": "^2.3.1",
     "axios": "^1.7.9",
-    "electron-updater": "^4.4.1",
-    "element-plus": "^2.9.5",
-    "entities": "^8.0.0",
-    "markdown-it": "^15.0.0",
-    "pinia": "^2.3.1",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "electron-updater": "^4.4.1"
   },
   "devDependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
     "@types/markdown-it": "^14.1.2",
     "@vitejs/plugin-vue": "^5.2.1",
     "concurrently": "^10.0.4",
     "cross-env": "^10.1.0",
     "electron": "^22.3.27",
     "electron-builder": "^24.13.3",
+    "element-plus": "^2.9.5",
+    "entities": "^8.0.0",
+    "markdown-it": "^15.0.0",
+    "pinia": "^2.3.1",
     "sass": "^1.83.4",
     "terser": "^5.50.0",
     "typescript": "~5.7.3",
     "vite": "^6.1.0",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0",
     "vue-tsc": "^2.2.0",
     "wait-on": "^9.1.0"
   }
